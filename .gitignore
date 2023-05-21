@@ -1,0 +1,7 @@
+.dependencies
+*.o
+*.a
+*.so
+tool/netcvdiag
+tool/netcvlogview
+tool/netcvupdate
