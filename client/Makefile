@@ -6,6 +6,14 @@
 #VERBOSE=1
 #BACKTRACE=1
 
+VERMAJOR = 1
+VERMINOR = 0
+VERPATCH = 0
+
+BASENAME = libnetceiver.so
+
+LIBNAME = $(BASENAME).$(VERMAJOR).$(VERMINOR).$(VERPATCH)
+
 ifdef RBMINI
   ARMEL=1
 endif
@@ -130,22 +138,11 @@ ifndef WIN32
 endif
 endif
 
-lib$(MCLI): $(MCLI_OBJS)
-ifdef WIN32
-	$(CC) $(LDFLAGS) -shared -o $@.dll $(MCLI_OBJS) $(LDLIBS) -Wl,--out-implib,$@.a -Wl,--output-def,$@.def
-	lib /def:$@.def /machine:x86 /out:..\\common\\win32\\lib\\$@.lib
-#	dlltool -k --dllname $@.dll --output-lib win32/lib/$@.lib --def $@.def
-	cp -a $@.dll win32/lib/
-	cp -a $@.a win32/lib/
-	cp -a $@.def win32/lib/
-endif
-ifdef APPLE
-	$(CC) $(LDFLAGS) -dynamiclib -o $@.dylib $(MCLI_OBJS) $(LDLIBS)
-	$(AR) $(ARFLAGS) $@.a $(MCLI_OBJS)
-else
-	$(CC) $(LDFLAGS) -shared -o $@.so $(MCLI_OBJS) $(LDLIBS)
-	$(AR) $(ARFLAGS) $@.a $(MCLI_OBJS)
-endif
+lib: $(LIBNAME)
+
+$(LIBNAME): $(MCLI_OBJS)
+	$(CC) $(LDFLAGS) -shared $(MCLI_OBJS) $(LDLIBS) -Wl,-soname="$(BASENAME).$(VERMAJOR)" -o $@
+#	$(AR) $(ARFLAGS) $@.a $(MCLI_OBJS)
 
 
 $(MCLI)-shared: lib$(MCLI)
@@ -196,7 +193,7 @@ depend: .dependencies
 	#makedepend -Y -- $(CFLAGS)  -- *c >/dev/null 2>&1
 
 clean:
-	rm -f $(MCLI) $(MCLI)-* *.elf *.gdb *.o *.lo *.la *~ *.so *.a *.def *.dll *.dylib out.ts .dependencies
+	rm -f $(MCLI) $(MCLI)-* *.elf *.gdb *.o *.lo *.la *~ *.so* *.a *.def *.dll *.dylib out.ts .dependencies
 
 mingw32:
 	rm -rf mingw/*.c mingw/*.h mingw/win32

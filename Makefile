@@ -12,10 +12,7 @@ tools: lib
 	 $(MAKE) -C tool/ all
 
 lib:
-	$(MAKE) libmcli.so
-
-libmcli.a libmcli.so:
-	$(MAKE) -C client/ libmcli
+	$(MAKE) -C client/ lib
 
 clean:
 	$(MAKE) -C client/ clean
