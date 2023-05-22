@@ -23,7 +23,8 @@
 
 #define DEBUG_MASK(bit, code)	if ((m_debugmask & bit) != 0) { code };
 
-extern int m_debugmask;
+// extern int m_debugmask;
+const int m_debugmask = 0;
 
 
 /* Log skip option */
@@ -33,4 +34,5 @@ extern int m_debugmask;
 
 #define LOGSKIP_MASK(bit, code)	if ((m_logskipmask & bit) == 0) { code };
 
-extern int m_logskipmask;
+// extern int m_logskipmask;
+const int m_logskipmask = 0;
