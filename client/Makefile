@@ -142,7 +142,7 @@ lib: $(LIBNAME)
 
 $(LIBNAME): $(MCLI_OBJS)
 	$(CC) $(LDFLAGS) -shared $(MCLI_OBJS) $(LDLIBS) -Wl,-soname="$(BASENAME).$(VERMAJOR)" -o $@
-#	$(AR) $(ARFLAGS) $@.a $(MCLI_OBJS)
+	ln -sf $(LIBNAME) $(BASENAME)
 
 
 $(MCLI)-shared: lib$(MCLI)

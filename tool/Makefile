@@ -36,7 +36,7 @@ CFLAGS ?= -Os -Wall -pthread
 
 INCLUDES += $(XML_INC) -I../dvbloop -I../common/ -I../client
 
-LDFLAGS:=$(XML_LIB) -pthread
+LDFLAGS:=$(XML_LIB) -L../client -lnetceiver -pthread
 
 ifdef API_SHM
 LDFLAGS:= $(LDFLAGS) -lrt
@@ -59,13 +59,13 @@ endif
 
 
 NETCVDIAG = netcvdiag
-NETCVDIAG_OBJS = netcvdiag.o tools.o
+NETCVDIAG_OBJS = netcvdiag.o
 
 NETCVUPDATE = netcvupdate
-NETCVUPDATE_OBJS = netcvupdate.o tools.o
+NETCVUPDATE_OBJS = netcvupdate.o
 
 NETCVLOGVIEW = netcvlogview
-NETCVLOGVIEW_OBJS = netcvlogview.o mcast.o tools.o
+NETCVLOGVIEW_OBJS = netcvlogview.o
 
 OBJS := $(NETCVDIAG_OBJS) $(NETCVUPDATE_OBJS) $(NETCVLOGVIEW_OBJS)
 
