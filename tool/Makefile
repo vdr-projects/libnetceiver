@@ -26,6 +26,9 @@ endif
 VDRDIR=../../../../..
 -include $(VDRDIR)/Make.config
 
+XML_INC ?= $(shell xml2-config --cflags)
+XML_LIB ?= $(shell xml2-config --libs)
+
 ifndef ARMEL
   LIBRARY_PATH = /usr/lib
 endif

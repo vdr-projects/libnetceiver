@@ -35,6 +35,9 @@ endif
 VDRDIR=../../../../..
 -include $(VDRDIR)/Make.config
 
+XML_INC ?= $(shell xml2-config --cflags)
+XML_LIB ?= $(shell xml2-config --libs)
+
 ifdef ARMEL
   CROSS = arm-linux-gnueabi-
 else
