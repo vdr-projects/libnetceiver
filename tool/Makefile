@@ -23,8 +23,7 @@ DEFINES  += -DAPPLE
 APPLE=1
 endif
 
-VDRDIR=../../../../..
--include $(VDRDIR)/Make.config
+include ../Make.config
 
 XML_INC ?= $(shell xml2-config --cflags)
 XML_LIB ?= $(shell xml2-config --libs)
