@@ -301,7 +301,6 @@ struct conf
 
 	unsigned int mca_groups;
 	unsigned int subscribers;
-	cmdline_t *cmd;
 #ifdef SERVER
 	tuner_t *tuner_parms;
 	int tuner_number;

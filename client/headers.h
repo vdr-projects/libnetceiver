@@ -14,7 +14,6 @@
 #include "list.h"
 #include "satlists.h"
 #include "mcast.h"
-#include "input.h"
 #include "recv_ccpp.h"
 #include "recv_tv.h"
 #include "tools.h"
