@@ -119,6 +119,7 @@ libnetceiver.pc:
 	@echo "Name: LibNetCeiver" >> $@
 	@echo "Description: NetCeiver Client Library" >> $@
 	@echo "Version: 1.0.0" >> $@
+	@echo "Requires.private: libxml-2.0" >> $@
 	@echo "Libs: -L\$${libdir} -lnetceiver" >> $@
 	@echo "Cflags: -I\$${includedir}/libnetceiver" >> $@
 
