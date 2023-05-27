@@ -14,6 +14,8 @@ BASENAME = libnetceiver.so
 
 LIBNAME = $(BASENAME).$(VERMAJOR).$(VERMINOR).$(VERPATCH)
 
+HEADERS = headers.h defs.h version.h list.h satlists.h mcast.h recv_ccpp.h recv_tv.h tools.h interfaces.h mld.h api_server.h tca_handler.h tra_handler.h mld_reporter.h ciparser.h ci_handler.h mmi_handler.h
+
 ifdef RBMINI
   ARMEL=1
 endif
@@ -80,7 +82,7 @@ endif
 ifdef WIN32
 CFLAGS:= -Iwin32/include $(CFLAGS) -mno-cygwin -fPIC -DWIN32
 LDFLAGS:= -Lwin32/lib $(LDFLAGS) -mno-cygwin
-LDLIBS:= -lpthreadGC2 -lxml2 -lz -lws2_32 -liphlpapi 
+LDLIBS:= -lpthreadGC2 -lxml2 -lz -lws2_32 -liphlpapi
 else
 CFLAGS:= $(CFLAGS) $(XML_INC)
 LDFLAGS:=$(LDFLAGS)
@@ -103,40 +105,38 @@ else
 MCLI_OBJS := $(MCLI_OBJS)
 endif
 
-lib: $(LIBNAME)
+all: $(LIBNAME)
 
 $(LIBNAME): $(MCLI_OBJS)
 	$(CC) $(LDFLAGS) -shared $(MCLI_OBJS) $(LDLIBS) -Wl,-soname="$(BASENAME).$(VERMAJOR)" -o $@
 	ln -sf $(LIBNAME) $(BASENAME)
 
+.PHONY: libnetceiver.pc
+libnetceiver.pc:
+	@echo "libdir=$(LIBDIR)" > $@
+	@echo "includedir=$(INCDIR)" >> $@
+	@echo "" >> $@
+	@echo "Name: LibNetCeiver" >> $@
+	@echo "Description: NetCeiver Client Library" >> $@
+	@echo "Version: 1.0.0" >> $@
+	@echo "Libs: -L\$${libdir} -lnetceiver" >> $@
+	@echo "Cflags: -I\$${includedir}/libnetceiver" >> $@
 
 
 api_shm_test.o: api_shm_test.c
 	$(CC) -c $(CFLAGS) -DUSE_SHM_API -o $@ $<
-	
+
 api_sock_test.o:api_sock_test.c
 	$(CC) -c $(CFLAGS) -DUSE_SOCK_API -o $@ $<
-	
+
 $(MCLI)-shmtest: api_shm_test.o
 	$(CC) $(LDFLAGS) -o $@ api_shm_test.o $(LDLIBS) -lrt
 
 $(MCLI)-socktest: api_sock_test.o
-	$(CC) $(LDFLAGS) -o $@ api_sock_test.o 
-	
-install: mcli
-	install -p $< /usr/sbin/$<
-
-install-lib: libmcli.la
-	libtool --mode=install install $< /usr/local/lib/	
-
-install-shared: mcli-shared
-	libtool --mode=install install $< /usr/local/bin
-
-depend: .dependencies
-	#makedepend -Y -- $(CFLAGS)  -- *c >/dev/null 2>&1
+	$(CC) $(LDFLAGS) -o $@ api_sock_test.o
 
 clean:
-	rm -f $(MCLI) $(MCLI)-* *.elf *.gdb *.o *.lo *.la *~ *.so* *.a *.def *.dll *.dylib out.ts .dependencies
+	rm -f *.o *.so* libnetceiver.pc
 
 mingw32:
 	rm -rf mingw/*.c mingw/*.h mingw/win32
@@ -145,9 +145,29 @@ mingw32:
 	cp -a win32/lib mingw/win32/
 	cp -a win32/include mingw/win32/
 	@echo "Created mingw directory - now ready to rumble... (call build.cmd)"
-        
+
 %.o: %.c
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 %.lo: %.c
 	$(CC) -c $(CFLAGS) -o $@ $<
+
+install-lib: all
+	install -d $(DESTDIR)$(LIBDIR)
+	install -m 755 $(LIBNAME) $(DESTDIR)$(LIBDIR)/
+	( cd $(DESTDIR)$(LIBDIR); ln -sf $(LIBNAME) $(BASENAME).$(VERMAJOR); ln -sf $(LIBNAME) $(BASENAME) )
+
+install-includes:
+	install -d $(DESTDIR)$(INCDIR)/libnetceiver/netcv/
+	install -m 644 $(HEADERS) $(DESTDIR)$(INCDIR)/libnetceiver/netcv/
+
+install-pc: libnetceiver.pc
+	install -d $(DESTDIR)$(PCDIR)
+	install -m 644 libnetceiver.pc $(DESTDIR)$(PCDIR)/
+
+install-legacy:
+	ln -sf $(LIBNAME) $(DESTDIR)$(LIBDIR)/libmcli.so
+	ln -sf netcv $(DESTDIR)$(INCDIR)/libnetceiver/client
+	ln -sf netcv $(DESTDIR)$(INCDIR)/libnetceiver/common
+
+install: install-lib install-includes install-pc install-legacy

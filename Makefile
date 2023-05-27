@@ -14,7 +14,7 @@ tools: lib
 
 .PHONY: lib
 lib:
-	$(MAKE) -C lib/ lib
+	$(MAKE) -C lib/ all
 
 clean:
 	$(MAKE) -C lib/ clean
