@@ -1,7 +1,7 @@
 LibNetCeiver
 ============
 
-LibNetCeiver provides a client side implementation of the NetCeiver protocol needed to utilize the NetCeiver hardware.
+LibNetCeiver provides a client side implementation of the NetCeiver protocol needed to utilize the NetCeiver hardware. It also includes basic NetCeiver maintenance tools needed to update firmware, change configuration or get status information.
 
 Project's homepage:
 https://github.com/vdr-projects/libnetceiver
