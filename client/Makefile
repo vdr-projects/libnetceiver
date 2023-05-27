@@ -103,41 +103,6 @@ else
 MCLI_OBJS := $(MCLI_OBJS)
 endif
 
-MCLI_SOBJS = main.o
-ifdef WIN32
-MCLI_SOBJS := $(MCLI_SOBJS) dummy_client.o
-else
-ifdef APPLE
-MCLI_SOBJS := $(MCLI_SOBJS) dummy_client.o input.o
-else
-MCLI_SOBJS := $(MCLI_SOBJS) dvblo_handler.o input.o
-endif 
-endif
-
-all: 
-	$(MAKE) lib$(MCLI)
-	$(MAKE) $(MCLI)-shared
-	$(MAKE) mcli
-
-static: $(MCLI)-static
-
-
-MAKEDEP = $(CXX) -MM -MG
-DEPFILE = .dependencies
-$(DEPFILE): Makefile
-	$(MAKEDEP) $(CFLAGS) $(MCLI_OBJS:%.o=%.c) > $@
-
--include $(DEPFILE)
-
-
-$(MCLI): $(MCLI_OBJS) $(MCLI_SOBJS) libmcli.so
-	$(CC) $(LDFLAGS) -o $@ $(MCLI_OBJS) $(MCLI_SOBJS) $(LDLIBS)
-ifndef DEBUG
-ifndef WIN32
-	strip $(MCLI)
-endif
-endif
-
 lib: $(LIBNAME)
 
 $(LIBNAME): $(MCLI_OBJS)
@@ -145,28 +110,6 @@ $(LIBNAME): $(MCLI_OBJS)
 	ln -sf $(LIBNAME) $(BASENAME)
 
 
-$(MCLI)-shared: lib$(MCLI)
-	$(CC) -c $(CFLAGS) -ULIBRARY -o main.o main.c
-ifdef WIN32
-	$(CC) -c $(CFLAGS) -ULIBRARY -o dummy_client.o dummy_client.c
-else
-ifdef APPLE
-	$(CC) -c $(CFLAGS) -ULIBRARY -o input.o input.c
-	$(CC) -c $(CFLAGS) -ULIBRARY -o dummy_client.o dummy_client.c
-else 
-	$(CC) -c $(CFLAGS) -ULIBRARY -o input.o input.c
-	$(CC) -c $(CFLAGS) -ULIBRARY -o dvblo_handler.o dvblo_handler.c
-endif
-endif
-	$(CC) $(LDFLAGS) -o $@ $(MCLI_SOBJS) $(LDLIBS) -L. -lmcli
-
-$(MCLI)-static: $(MCLI_OBJS) $(MCLI_SOBJS)
-	$(CC) $(LDFLAGS) -static -static-libgcc -o $@ $(MCLI_OBJS) $(MCLI_SOBJS) $(LDLIBS) $(LIBRARY_PATH)/libxml2.a $(LIBRARY_PATH)/libz.a $(LIBRARY_PATH)/libm.a $(LIBRARY_PATH)/libpthread.a
-ifndef DEBUG 
-ifndef WIN32
-	strip $(MCLI)-static
-endif
-endif
 
 api_shm_test.o: api_shm_test.c
 	$(CC) -c $(CFLAGS) -DUSE_SHM_API -o $@ $<
