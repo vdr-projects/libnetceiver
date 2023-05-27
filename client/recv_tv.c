@@ -30,6 +30,7 @@ pthread_mutex_t lock;
 int mld_start=0;
 
 #include "logging.h"
+#include "logging_p.h"
 
 int port=23000;
 char iface[IFNAMSIZ];
@@ -167,10 +168,10 @@ static void recv_ts_func (unsigned char *buf, int n, void *arg) {
 
 			// see also https://en.wikipedia.org/wiki/MPEG_transport_stream#Packet_identifier_(PID)
 			if (pid != 8191 && (adaption_field & 1) && (((p->cont_old + 1) & 0xf) != cont) && p->cont_old >= 0) {
-			    if (((pid >= 16 && pid <= 18) || pid == 0) && (m_logskipmask & LOGSKIP_BIT_recv_ts_func_pid_Data)) {
+			    if (((pid >= 16 && pid <= 18) || pid == 0) && (netcv_logskipmask & NETCV_LOGSKIP_BIT_recv_ts_func_pid_Data)) {
 				// ignored by log skip mask
 			    } else {
-			      if ((m_debugmask & DEBUG_BIT_recv_ts_func_NO_LOGRATELIMIT) == 0) {
+			      if ((netcv_debugmask & NETCV_DEBUG_BIT_recv_ts_func_NO_LOGRATELIMIT) == 0) {
 				warn_show = 0;
 				time(&warn_time_now);
 				if (warn_count == 0) { // 1st occurance
@@ -182,20 +183,20 @@ static void recv_ts_func (unsigned char *buf, int n, void *arg) {
 					};
 				};
 				warn_count++;
-			      } else { // DEBUG_BIT_recv_ts_func_NO_LOGRATELIMIT
+			      } else { // NETCV_DEBUG_BIT_recv_ts_func_NO_LOGRATELIMIT
 				warn_show = 1;
-			      }; // DEBUG_BIT_recv_ts_func_NO_LOGRATELIMIT
+			      }; // NETCV_DEBUG_BIT_recv_ts_func_NO_LOGRATELIMIT
 				if (warn_show > 0) {
-			            if ((m_debugmask & DEBUG_BIT_recv_ts_func_NO_LOGRATELIMIT) == 0) {
+			            if ((netcv_debugmask & NETCV_DEBUG_BIT_recv_ts_func_NO_LOGRATELIMIT) == 0) {
 					time(&warn_time_last);
 					if ((warn_count - warn_count_last) >= DISCONTINUITY_SUPPRESS_SECONDS) {
 						warn ("mcli::%s: Discontinuity on receiver messages suppressed in %ld seconds: %ld\n", __FUNCTION__, (long int) warn_time_diff, (warn_count - warn_count_last));
 					};
 					warn_count_last = warn_count;
-				    }; // DEBUG_BIT_recv_ts_func_NO_LOGRATELIMIT
+				    }; // NETCV_DEBUG_BIT_recv_ts_func_NO_LOGRATELIMIT
 					warn ("mcli::%s: Discontinuity on receiver %p for pid %d: %d->%d at pos %d/%d\n", __FUNCTION__, r, pid, p->cont_old, cont, i / 188, n / 188);
 				};
-			    }; // LOGSKIP_BIT_recv_ts_func_pid_Data
+			    }; // NETCV_LOGSKIP_BIT_recv_ts_func_pid_Data
 			}
 			if (transport_error_indicator) {
 				warn ("mcli::%s: Transport error indicator set on receiver %p for pid %d: %d->%d at pos %d/%d\n", __FUNCTION__, r, pid, p->cont_old, cont, i / 188, n / 188);
@@ -356,11 +357,11 @@ static void deallocate_slot (recv_info_t * r, pid_info_t *p)
 
 #endif		//info ("Deallocating PID %d from slot %p\n", p->pid.pid, p);
 		p->run = 0;
-#ifdef DEBUG_PIDS
-	DEBUG_MASK(DEBUG_BIT_PIDS,
+
+	DEBUG_MASK(NETCV_DEBUG_BIT_PIDS,
 	warn ("mcli::%s: Deallocating PID %d (id %d) from Slot %p\n", __FUNCTION__, p->pid.pid, p->pid.id, p);
 	)
-#endif
+
 		//Do not leave multicast group if there is another dvb adapter using the same group
 		if (find_any_slot_by_mcg (r, &p->mcg)) {
 			dbg ("mcli::%s: MCG is still in use not dropping\n", __FUNCTION__);
@@ -391,11 +392,11 @@ static pid_info_t *allocate_slot (recv_info_t * r, struct in6_addr *mcg, dvb_pid
 		err ("mcli::%s: Cannot get memory for pid\n", __FUNCTION__);
 	}
 	
-#ifdef DEBUG_PIDS
-	DEBUG_MASK(DEBUG_BIT_PIDS,
+
+	DEBUG_MASK(NETCV_DEBUG_BIT_PIDS,
 	warn ("mcli::%s: Allocating new PID %d (id %d) to Slot %p\n", __FUNCTION__, pid->pid, pid->id, p);
 	)
-#endif
+
 	memset(p, 0, sizeof(pid_info_t)); 
 	
 	p->cont_old = -1;

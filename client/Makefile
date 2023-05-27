@@ -96,7 +96,7 @@ endif
 
 MCLI = mcli
 
-MCLI_OBJS= mld_common.o mld_client.o mld_reporter.o mcast.o recv_tv.o recv_ccpp.o tools.o tca_handler.o tra_handler.o satlists.o interfaces.o api_server.o ciparser.o ci_handler.o mmi_handler.o
+MCLI_OBJS= mld_common.o mld_client.o mld_reporter.o mcast.o recv_tv.o recv_ccpp.o tools.o tca_handler.o tra_handler.o satlists.o interfaces.o api_server.o ciparser.o ci_handler.o mmi_handler.o logging.o
 ifdef WIN32
 MCLI_OBJS := $(MCLI_OBJS) inet_pton.o inet_ntop.o inet_aton.o
 else
