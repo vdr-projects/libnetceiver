@@ -2,6 +2,6 @@
 *.o
 *.a
 *.so*
-tool/netcvdiag
-tool/netcvlogview
-tool/netcvupdate
+tools/netcvdiag
+tools/netcvlogview
+tools/netcvupdate

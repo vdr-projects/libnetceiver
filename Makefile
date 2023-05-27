@@ -8,12 +8,14 @@ SOFILE = libnetceiver.so
 
 all: lib tools
 
+.PHONY: tools
 tools: lib
-	 $(MAKE) -C tool/ all
+	 $(MAKE) -C tools/ all
 
+.PHONY: lib
 lib:
-	$(MAKE) -C client/ lib
+	$(MAKE) -C lib/ lib
 
 clean:
-	$(MAKE) -C client/ clean
-	$(MAKE) -C tool/ clean
+	$(MAKE) -C lib/ clean
+	$(MAKE) -C tools/ clean

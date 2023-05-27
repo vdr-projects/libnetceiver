@@ -34,9 +34,9 @@ endif
 
 CFLAGS ?= -Os -Wall -pthread 
 
-INCLUDES += $(XML_INC) -I../dvbloop -I../common/ -I../client
+INCLUDES += $(XML_INC) -I../lib/
 
-LDFLAGS:=$(XML_LIB) -L../client -lnetceiver -pthread
+LDFLAGS:=$(XML_LIB) -L../lib -lnetceiver -pthread
 
 ifdef API_SHM
 LDFLAGS:= $(LDFLAGS) -lrt
