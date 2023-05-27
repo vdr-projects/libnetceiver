@@ -27,5 +27,4 @@
 #include "ciparser.h"
 #include "ci_handler.h"
 #include "mmi_handler.h"
-#include "siparser.h"
 #endif
