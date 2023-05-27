@@ -167,7 +167,8 @@ install-pc: libnetceiver.pc
 
 install-legacy:
 	ln -sf $(LIBNAME) $(DESTDIR)$(LIBDIR)/libmcli.so
-	ln -sf netcv $(DESTDIR)$(INCDIR)/libnetceiver/client
-	ln -sf netcv $(DESTDIR)$(INCDIR)/libnetceiver/common
+	install -d $(DESTDIR)$(INCDIR)/libnetceiver/mcast/
+	ln -sf "../netcv" $(DESTDIR)$(INCDIR)/libnetceiver/mcast/client
+	ln -sf "../netcv" $(DESTDIR)$(INCDIR)/libnetceiver/mcast/common
 
 install: install-lib install-includes install-pc install-legacy
