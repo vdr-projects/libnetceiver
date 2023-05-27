@@ -82,7 +82,7 @@ CFLAGS:= -Iwin32/include $(CFLAGS) -mno-cygwin -fPIC -DWIN32
 LDFLAGS:= -Lwin32/lib $(LDFLAGS) -mno-cygwin
 LDLIBS:= -lpthreadGC2 -lxml2 -lz -lws2_32 -liphlpapi 
 else
-CFLAGS:= $(CFLAGS)  -I../dvbloop $(XML_INC)
+CFLAGS:= $(CFLAGS) $(XML_INC)
 LDFLAGS:=$(LDFLAGS)
 LDLIBS:=$(XML_LIB) -lpthread -lz -lm
 endif
