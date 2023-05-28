@@ -31,4 +31,4 @@ Contributor notes
 The NetCeiver is old, outdated hardware and only a few projects cover it. To make it as easy as possible for existing projects with NetCeiver support, please follow this rules:
 
 - Do not break or change existing interfaces. Best case the current interface is stable forever.
-- If new interfaces are added, then prefix them with "netcv_" or "NETCV_" to reduce the risk of conflicts with other functions in a project. Example for this is the recently added (https://github.com/vdr-projects/libnetceiver/blob/master/lib/logging.h)["log masking" feature].
+- If new interfaces are added, then prefix them with "netcv_" or "NETCV_" to reduce the risk of conflicts with other functions in a project. Example for this is the recently added ["log masking" feature](https://github.com/vdr-projects/libnetceiver/blob/master/lib/logging.h).
