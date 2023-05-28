@@ -14,7 +14,7 @@ BASENAME = libnetceiver.so
 
 LIBNAME = $(BASENAME).$(VERMAJOR).$(VERMINOR).$(VERPATCH)
 
-HEADERS = headers.h defs.h version.h list.h satlists.h mcast.h recv_ccpp.h recv_tv.h tools.h interfaces.h mld.h api_server.h tca_handler.h tra_handler.h mld_reporter.h ciparser.h ci_handler.h mmi_handler.h
+HEADERS = headers.h defs.h version.h list.h satlists.h mcast.h recv_ccpp.h recv_tv.h tools.h interfaces.h mld.h api_server.h tca_handler.h tra_handler.h mld_reporter.h ciparser.h ci_handler.h mmi_handler.h logging.h
 
 ifdef RBMINI
   ARMEL=1
