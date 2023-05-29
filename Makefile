@@ -4,8 +4,6 @@
 
 include Make.config
 
-SOFILE = libnetceiver.so
-
 all: lib tools
 
 .PHONY: tools
@@ -15,6 +13,10 @@ tools: lib
 .PHONY: lib
 lib:
 	$(MAKE) -C lib/ all
+
+install:
+	$(MAKE) -C lib/ install
+	$(MAKE) -C tools/ install
 
 clean:
 	$(MAKE) -C lib/ clean
