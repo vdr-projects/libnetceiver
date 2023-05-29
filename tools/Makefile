@@ -35,7 +35,8 @@ CFLAGS ?= -Os -Wall -pthread
 
 INCLUDES += $(XML_INC) -I../lib/
 
-LDFLAGS:= -L../lib -lnetceiver -pthread
+LDFLAGS:= -L../lib -pthread
+LDLIBS:= -lnetceiver
 
 ifdef API_SHM
 LDFLAGS:= $(LDFLAGS) -lrt
@@ -71,7 +72,7 @@ all: $(NETCVDIAG) $(NETCVUPDATE) $(NETCVLOGVIEW)
 
 
 $(NETCVDIAG): $(NETCVDIAG_OBJS)
-	$(CC) $(LDFLAGS) $(NETCVDIAG_OBJS) -o $@
+	$(CC) $(LDFLAGS) $(NETCVDIAG_OBJS) $(LDLIBS) -o $@
 ifndef DEBUG
 ifndef WIN32
 	strip $(NETCVDIAG)
@@ -79,7 +80,7 @@ endif
 endif
 
 $(NETCVUPDATE): $(NETCVUPDATE_OBJS)
-	$(CC) $(LDFLAGS) $(NETCVUPDATE_OBJS) -o $@
+	$(CC) $(LDFLAGS) $(NETCVUPDATE_OBJS) $(LDLIBS) -o $@
 ifndef DEBUG
 ifndef WIN32
 	strip $(NETCVUPDATE)
@@ -87,7 +88,7 @@ endif
 endif
 
 $(NETCVLOGVIEW): $(NETCVLOGVIEW_OBJS)
-	$(CC) $(LDFLAGS) $(NETCVLOGVIEW_OBJS) -o $@
+	$(CC) $(LDFLAGS) $(NETCVLOGVIEW_OBJS) $(LDLIBS) -o $@
 ifndef DEBUG
 ifndef WIN32
 	strip $(NETCVLOGVIEW)
