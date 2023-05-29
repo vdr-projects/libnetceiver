@@ -26,17 +26,16 @@ endif
 include ../Make.config
 
 XML_INC ?= $(shell xml2-config --cflags)
-XML_LIB ?= $(shell xml2-config --libs)
 
 ifndef ARMEL
   LIBRARY_PATH = /usr/lib
 endif
 
-CFLAGS ?= -Os -Wall -pthread 
+CFLAGS ?= -Os -Wall -pthread
 
 INCLUDES += $(XML_INC) -I../lib/
 
-LDFLAGS:=$(XML_LIB) -L../lib -lnetceiver -pthread
+LDFLAGS:= -L../lib -lnetceiver -pthread
 
 ifdef API_SHM
 LDFLAGS:= $(LDFLAGS) -lrt
@@ -67,23 +66,12 @@ NETCVUPDATE_OBJS = netcvupdate.o
 NETCVLOGVIEW = netcvlogview
 NETCVLOGVIEW_OBJS = netcvlogview.o
 
-OBJS := $(NETCVDIAG_OBJS) $(NETCVUPDATE_OBJS) $(NETCVLOGVIEW_OBJS)
 
 all: $(NETCVDIAG) $(NETCVUPDATE) $(NETCVLOGVIEW)
 
-static: $(NETCVDIAG)-static $(NETCVUPDATE)-static
-
-
-MAKEDEP = $(CXX) -MM -MG
-DEPFILE = .dependencies
-$(DEPFILE): Makefile
-	@$(MAKEDEP) $(DEFINES) $(INCLUDES) $(OBJS:%.o=%.c) > $@
-
--include $(DEPFILE)
-
 
 $(NETCVDIAG): $(NETCVDIAG_OBJS)
-	$(CC) $(LDFLAGS) -o $@ $(NETCVDIAG_OBJS) $(LDLIBS)
+	$(CC) $(LDFLAGS) $(NETCVDIAG_OBJS) -o $@
 ifndef DEBUG
 ifndef WIN32
 	strip $(NETCVDIAG)
@@ -91,7 +79,7 @@ endif
 endif
 
 $(NETCVUPDATE): $(NETCVUPDATE_OBJS)
-	$(CC) $(LDFLAGS) -o $@ $(NETCVUPDATE_OBJS) $(LDLIBS)
+	$(CC) $(LDFLAGS) $(NETCVUPDATE_OBJS) -o $@
 ifndef DEBUG
 ifndef WIN32
 	strip $(NETCVUPDATE)
@@ -99,24 +87,12 @@ endif
 endif
 
 $(NETCVLOGVIEW): $(NETCVLOGVIEW_OBJS)
-	$(CC) $(LDFLAGS) -o $@ $(NETCVLOGVIEW_OBJS) $(LDLIBS)
+	$(CC) $(LDFLAGS) $(NETCVLOGVIEW_OBJS) -o $@
 ifndef DEBUG
 ifndef WIN32
 	strip $(NETCVLOGVIEW)
 endif
 endif
-
-$(NETCVDIAG)-static: $(NETCVDIAG_OBJS)
-	$(CC) $(LDFLAGS) -static -static-libgcc -o $@ $(NETCVDIAG_OBJS) $(LDLIBS) $(LIBRARY_PATH)/libm.a  $(LIBRARY_PATH)/libz.a
-	strip $(NETCVDIAG)-static
-
-$(NETCVUPDATE)-static: $(NETCVUPDATE_OBJS)
-	$(CC) $(LDFLAGS) -static -static-libgcc -o $@ $(NETCVUPDATE_OBJS) $(LDLIBS) $(LIBRARY_PATH)/libm.a
-	strip $(NETCVUPDATE)-static
-
-$(NETCVLOGVIEW)-static: $(NETCVLOGVIEW_OBJS)
-	$(CC) $(LDFLAGS) -static -static-libgcc -o $@ $(NETCVLOGVIEW_OBJS) $(LDLIBS) $(LIBRARY_PATH)/libm.a  $(LIBRARY_PATH)/libz.a $(LIBRARY_PATH)/libpthread.a
-	strip $(NETCVLOGVIEW)-static
 
 install: $(NETCVDIAG) $(NETCVUPDATE) $(NETCVLOGVIEW)
 	install -d $(DESTDIR)$(BINDIR)
