@@ -12,9 +12,6 @@
 /* Wrappers so we don't have to change the copied stuff ;) */
 #define __u8 uint8_t
 #define __u16 uint16_t
-/* Booleans */
-#define false	0
-#define true	(!false)
 
 
 /* Determine Endianness */
@@ -264,7 +261,10 @@ struct mld2_query
 #define MLDV2_QQIC(value) MLDV2_EXP(0x80, 4, 3, value)
 #define MLDV2_MRC(value) MLDV2_EXP(0x8000, 12, 3, value)
 
-#define bool 	int
+// TODO: Check if the "bool" values in the following "conf" struct are
+//       actually needed. This requires some deeper analysis of the whole
+//       project to find out if the struct is communicated to the netceiver.
+#define __mld_bool 	int
 
 #define RAW_RX_BUF_SIZE 1024*1024
 
@@ -282,10 +282,10 @@ struct conf
 
 	struct mc_group *groups;
 
-	bool quit;		/* Global Quit signal */
+	__mld_bool __quit;		/* Global Quit signal */
 
-	bool promisc;		/* Make interfaces promisc? (To be sure to receive all MLD's) */
-	bool mode;		/* Streamer 0 /Client mode 1 */
+	__mld_bool __promisc;		/* Make interfaces promisc? (To be sure to receive all MLD's) */
+	__mld_bool __mode;		/* Streamer 0 /Client mode 1 */
 
 	uint8_t *buffer;	/* Our buffer */
 	unsigned int bufferlen;	/* Length of the buffer */
