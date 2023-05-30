@@ -10,7 +10,6 @@
 #define __INTERFACES_H
 
 #define INTNODE_MAXIPV4 4	/* Maximum number of IPv4 aliases */
-#define bool 	int
 
 /*
  * The list of interfaces we do multicast on
