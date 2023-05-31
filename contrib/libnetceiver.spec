@@ -2,7 +2,7 @@
 # rpmbuild -bb --undefine=_disable_source_fetch libnetceiver.spec
 
 %define ver	0.0.6
-%define rel	1
+%define rel	2
 
 Name:           libnetceiver
 Version:        %{ver}
@@ -52,6 +52,14 @@ export PCDIR=%{_libdir}/pkgconfig
 %make_install
 
 
+%post
+%ldconfig_post
+
+
+%postun
+%ldconfig_postun
+
+
 %files
 %license COPYING
 %doc README.md HISTORY
@@ -65,5 +73,8 @@ export PCDIR=%{_libdir}/pkgconfig
 
 
 %changelog
+* Wed May 31 2023 Peter Bieringer <pb@bieringer.de> - 0.0.6-2
+- Call ldconfig on post/postun
+
 * Wed May 31 2023 Peter Bieringer <pb@bieringer.de> - 0.0.6-1
 - Initial release based on vdr-mcli.spec 0.9.7-4
