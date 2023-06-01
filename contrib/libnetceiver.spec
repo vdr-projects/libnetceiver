@@ -2,7 +2,7 @@
 # rpmbuild -bb --undefine=_disable_source_fetch libnetceiver.spec
 
 %define ver	0.0.6
-%define rel	2
+%define rel	3
 
 Name:           libnetceiver
 Version:        %{ver}
@@ -28,7 +28,7 @@ update firmware, change configuration or get status information.
 
 %package devel
 Summary:        C header files for DVB multicast stream client 
-
+Requires:	libnetceiver
 
 %description devel
 C header files for LibNetCeiver
@@ -73,6 +73,9 @@ export PCDIR=%{_libdir}/pkgconfig
 
 
 %changelog
+* Thu Jun 01 2023 Peter Bieringer <pb@bieringer.de> - 0.0.6-3
+- Require libnetceiver for libnetceiver-devel
+
 * Wed May 31 2023 Peter Bieringer <pb@bieringer.de> - 0.0.6-2
 - Call ldconfig on post/postun
 
