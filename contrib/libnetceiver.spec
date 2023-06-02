@@ -2,11 +2,11 @@
 # rpmbuild -bb --undefine=_disable_source_fetch libnetceiver.spec
 
 %define ver	0.0.6
-%define rel	3
+%define rel	4
 
 Name:           libnetceiver
 Version:        %{ver}
-Release:        %{rel}
+Release:        %{rel}%{?dist}
 Summary:        Client side implementation for the NetCeiver hardware for VDR
 
 License:        LGPLv2+
@@ -73,6 +73,9 @@ export PCDIR=%{_libdir}/pkgconfig
 
 
 %changelog
+* Fri Jun 02 2023 Peter Bieringer <pb@bieringer.de> - 0.0.6-4
+- Add missing dist to release
+
 * Thu Jun 01 2023 Peter Bieringer <pb@bieringer.de> - 0.0.6-3
 - Require libnetceiver for libnetceiver-devel
 
