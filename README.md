@@ -46,3 +46,4 @@ Packages
 --------
 
 * RPM (Fedora): until included in upstream available via COPR: https://copr.fedorainfracloud.org/coprs/pbiering/vdr_extensions/packages/
+* Arch Linux (AUR): [libnetceiver](https://aur.archlinux.org/packages/libnetceiver) and [libnetceiver-tools](https://aur.archlinux.org/packages/libnetceiver-tools)
