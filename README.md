@@ -33,6 +33,14 @@ The NetCeiver is old, outdated hardware and only a few projects cover it. To mak
 - Do not break or change existing interfaces. Best case the current interface is stable forever.
 - If new interfaces are added, then prefix them with "netcv_" or "NETCV_" to reduce the risk of conflicts with other functions in a project. Example for this is the recently added ["log masking" feature](https://github.com/vdr-projects/libnetceiver/blob/master/lib/logging.h).
 
+NetCeiver Clients based on LibNetCeiver
+---------------------------------------
+
+LibNetCeiver itself does not provide a usable client to receive a TV signal from a NetCeiver. But it is used by the following projects to provide NetCeiver client functionality:
+
+- [vdr-plugin-mcli](https://github.com/vdr-projects/vdr-plugin-mcli/)
+- [minisatip](https://minisatip.org/) if built with `./configure --with-mcli=/usr/include/libnetceiver`
+- [netcv2dvbip](https://github.com/vdr-projects/netcv2dvbip)
 
 Packages
 --------
