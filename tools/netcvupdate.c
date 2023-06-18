@@ -39,6 +39,7 @@ char *versions[256]={0};
 int num_uuids=0;
 char socket_path[256]=API_SOCK_NAMESPACE;
 int ftp_client_lftp = 0;
+int ftp_client_tnftp = 0;
 int debug = 0;
 
 const char* lftp_standard_options = "set ftp:use-site-utime off\nset ftp:use-site-utime2 off\nset ftp:use-feat off\nset ftp:ssl-allow false\n";
@@ -722,6 +723,7 @@ void usage(void)
 		"           -p <password>     Set password\n"
 		"           -r                No reboot after update\n"
 		"           -n                Use next-generation FTP client 'lftp'\n"
+		"           -t                Use next-generation FTP client 'tnftp'\n"
 		"           -q                Be more quiet\n"
 		);
 	exit(0);
@@ -732,7 +734,7 @@ int main(int argc, char **argv)
 	int ret=0;
 	
 	while(1) {
-		int ret = getopt(argc,argv, "h?U:X:Di:AlLI:E:Z:d:F:P:u:p:rRqKne");
+		int ret = getopt(argc,argv, "h?U:X:Di:AlLI:E:Z:d:F:P:u:p:rRqKnte");
 		if (ret==-1)
 			break;
 			
@@ -811,6 +813,11 @@ int main(int argc, char **argv)
 			ftp_client_lftp = 1;
 			snprintf(ftp_cmd, sizeof(ftp_cmd), "%s", "lftp");
 			fprintf(stderr, "INFO  : enable options for FTP client 'lftp'\n");
+			break;
+		case 't':
+			ftp_client_tnftp = 1;
+			snprintf(ftp_cmd, sizeof(ftp_cmd), "%s", "tnftp");
+			fprintf(stderr, "INFO  : enable options for FTP client 'tnftp'\n");
 			break;
 		case 'e':
 			debug = 1;

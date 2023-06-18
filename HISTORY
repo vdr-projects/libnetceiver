@@ -1,2 +1,5 @@
+2023-06-18
+- add support for 'tnftp'
+
 2023-05-31/pbiering: 0.0.6
 - add RPM spec file
