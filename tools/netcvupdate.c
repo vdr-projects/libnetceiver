@@ -217,7 +217,7 @@ int do_reboot(char *tmpdir, char *ip, char* iface, char *user, char* pwd)
 		"%s"					// lftp: set various flags
 		"open %s%%%s\n"
 		"user %s %s\n"
-		"site exec reboot -d 5\n"
+		"site exec reboot -d 5 &\n"
 		"quit\n"
 		,
 		((ftp_client_lftp == 1) ? lftp_standard_options : ""),
