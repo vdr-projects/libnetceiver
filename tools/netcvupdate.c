@@ -723,7 +723,7 @@ void usage(void)
 		"           -p <password>     Set password\n"
 		"           -r                No reboot after update\n"
 		"           -n                Use next-generation FTP client 'lftp'\n"
-		"           -t                Use next-generation FTP client 'tnftp'\n"
+		"           -t                Use next-generation FTP client 'tnftp' (in case not found in PATH)\n"
 		"           -q                Be more quiet\n"
 		);
 	exit(0);
@@ -732,6 +732,14 @@ void usage(void)
 int main(int argc, char **argv)
 {
 	int ret=0;
+
+	// autodetect 'tnftp'
+	if (! system("which tnftp >/dev/null 2>&1")) {
+		fprintf(stderr, "INFO  : found in PATH FTP client 'tnftp'\n");
+		ftp_client_tnftp = 1;
+		snprintf(ftp_cmd, sizeof(ftp_cmd), "%s", "tnftp");
+		fprintf(stderr, "INFO  : enable options for FTP client 'tnftp'\n");
+	};
 	
 	while(1) {
 		int ret = getopt(argc,argv, "h?U:X:Di:AlLI:E:Z:d:F:P:u:p:rRqKnte");
