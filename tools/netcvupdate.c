@@ -736,7 +736,7 @@ int main(int argc, char **argv)
 		snprintf(ftp_cmd, sizeof(ftp_cmd), "%s", "tnftp");
 	} else if (! system("which ftp >/dev/null 2>&1")) {
 		fprintf(stderr, "INFO  : found in PATH FTP client 'ftp'\n");
-		if (! system("ftp -h | grep -q tnftp >/dev/null 2>&1")) {
+		if (! system("ftp -h 2>&1 | grep -q tnftp")) {
 			fprintf(stderr, "INFO  : 'ftp' client found in PATH is 'tnftp'\n");
 		} else {
 			fprintf(stderr, "WARN  : 'ftp' client found in PATH is not 'tnftp' as expected (use option -n for 'lftp' or -F <ftp-command>)\n");
