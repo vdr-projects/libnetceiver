@@ -5,7 +5,7 @@
  * - Unpack given .tgz into host /tmp/mkdtemp()
  * - "md5sum -c md5sums.txt"
  * - read script file update.scr
- * - feed commands into tnftp 
+ * - feed commands into tnftp (optional: lftp)
  *
  *
  *------------------------------------------------------------------------*/
@@ -39,7 +39,6 @@ char *versions[256]={0};
 int num_uuids=0;
 char socket_path[256]=API_SOCK_NAMESPACE;
 int ftp_client_lftp = 0;
-int ftp_client_tnftp = 0;
 int debug = 0;
 
 const char* lftp_standard_options = "set ftp:use-site-utime off\nset ftp:use-site-utime2 off\nset ftp:use-feat off\nset ftp:ssl-allow false\n";
@@ -717,13 +716,11 @@ void usage(void)
 		"Rare options:\n"
 		"           -d <device>       Set network device (default: eth0)\n"
 		"           -F <ftp-command>  Set ftp command/path\n"
-		" *** ftp command must understand the -q (timeout) option in case '-n' is not used! ***\n"
 		"           -P <path>         Set API socket\n"
 		"           -u <user>         Set username\n"
 		"           -p <password>     Set password\n"
 		"           -r                No reboot after update\n"
 		"           -n                Use next-generation FTP client 'lftp'\n"
-		"           -t                Use next-generation FTP client 'tnftp' (in case not found in PATH)\n"
 		"           -q                Be more quiet\n"
 		);
 	exit(0);
@@ -736,13 +733,18 @@ int main(int argc, char **argv)
 	// autodetect 'tnftp'
 	if (! system("which tnftp >/dev/null 2>&1")) {
 		fprintf(stderr, "INFO  : found in PATH FTP client 'tnftp'\n");
-		ftp_client_tnftp = 1;
 		snprintf(ftp_cmd, sizeof(ftp_cmd), "%s", "tnftp");
-		fprintf(stderr, "INFO  : enable options for FTP client 'tnftp'\n");
+	} else if (! system("which ftp >/dev/null 2>&1")) {
+		fprintf(stderr, "INFO  : found in PATH FTP client 'ftp'\n");
+		if (! system("ftp -h | grep -q tnftp >/dev/null 2>&1")) {
+			fprintf(stderr, "INFO  : 'ftp' client found in PATH is 'tnftp'\n");
+		} else {
+			fprintf(stderr, "WARN  : 'ftp' client found in PATH is not 'tnftp' as expected (use option -n for 'lftp' or -F <ftp-command>)\n");
+		};
 	};
 	
 	while(1) {
-		int ret = getopt(argc,argv, "h?U:X:Di:AlLI:E:Z:d:F:P:u:p:rRqKnte");
+		int ret = getopt(argc,argv, "h?U:X:Di:AlLI:E:Z:d:F:P:u:p:rRqKne");
 		if (ret==-1)
 			break;
 			
@@ -821,11 +823,6 @@ int main(int argc, char **argv)
 			ftp_client_lftp = 1;
 			snprintf(ftp_cmd, sizeof(ftp_cmd), "%s", "lftp");
 			fprintf(stderr, "INFO  : enable options for FTP client 'lftp'\n");
-			break;
-		case 't':
-			ftp_client_tnftp = 1;
-			snprintf(ftp_cmd, sizeof(ftp_cmd), "%s", "tnftp");
-			fprintf(stderr, "INFO  : enable options for FTP client 'tnftp'\n");
 			break;
 		case 'e':
 			debug = 1;
