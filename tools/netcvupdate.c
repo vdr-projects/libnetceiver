@@ -5,7 +5,7 @@
  * - Unpack given .tgz into host /tmp/mkdtemp()
  * - "md5sum -c md5sums.txt"
  * - read script file update.scr
- * - feed commands into tnftp 
+ * - feed commands into tnftp (optional: lftp)
  *
  *
  *------------------------------------------------------------------------*/
@@ -216,7 +216,7 @@ int do_reboot(char *tmpdir, char *ip, char* iface, char *user, char* pwd)
 		"%s"					// lftp: set various flags
 		"open %s%%%s\n"
 		"user %s %s\n"
-		"site exec reboot -d 5\n"
+		"site exec reboot -d 5 &\n"
 		"quit\n"
 		,
 		((ftp_client_lftp == 1) ? lftp_standard_options : ""),
@@ -716,7 +716,6 @@ void usage(void)
 		"Rare options:\n"
 		"           -d <device>       Set network device (default: eth0)\n"
 		"           -F <ftp-command>  Set ftp command/path\n"
-		" *** ftp command must understand the -q (timeout) option in case '-n' is not used! ***\n"
 		"           -P <path>         Set API socket\n"
 		"           -u <user>         Set username\n"
 		"           -p <password>     Set password\n"
@@ -730,6 +729,19 @@ void usage(void)
 int main(int argc, char **argv)
 {
 	int ret=0;
+
+	// autodetect 'tnftp'
+	if (! system("which tnftp >/dev/null 2>&1")) {
+		fprintf(stderr, "INFO  : found in PATH FTP client 'tnftp'\n");
+		snprintf(ftp_cmd, sizeof(ftp_cmd), "%s", "tnftp");
+	} else if (! system("which ftp >/dev/null 2>&1")) {
+		fprintf(stderr, "INFO  : found in PATH FTP client 'ftp'\n");
+		if (! system("ftp -h 2>&1 | grep -q tnftp")) {
+			fprintf(stderr, "INFO  : 'ftp' client found in PATH is 'tnftp'\n");
+		} else {
+			fprintf(stderr, "WARN  : 'ftp' client found in PATH is not 'tnftp' as expected (use option -n for 'lftp' or -F <ftp-command>)\n");
+		};
+	};
 	
 	while(1) {
 		int ret = getopt(argc,argv, "h?U:X:Di:AlLI:E:Z:d:F:P:u:p:rRqKne");

@@ -1,8 +1,8 @@
 # Build instructions
 # rpmbuild -bb --undefine=_disable_source_fetch libnetceiver.spec
 
-%define ver	0.0.6
-%define rel	4
+%define ver	0.0.7
+%define rel	5
 
 Name:           libnetceiver
 Version:        %{ver}
@@ -17,6 +17,7 @@ BuildRequires:  gcc-c++
 BuildRequires:  libxml2-devel
 
 Requires:       libxml2
+Requires:       tnftp
 
 
 %description
@@ -73,6 +74,9 @@ export PCDIR=%{_libdir}/pkgconfig
 
 
 %changelog
+* Tue Jun 20 2023 Peter Bieringer <pb@bieringer.de> - 0.0.7-5
+- Add requirement for 'tnftp'
+
 * Fri Jun 02 2023 Peter Bieringer <pb@bieringer.de> - 0.0.6-4
 - Add missing dist to release
 

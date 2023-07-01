@@ -1,2 +1,9 @@
+2023-06-20/pbiering: 0.0.7
+- add autodetection of 'tnftp' in PATH
+
+2023-06-18/pbiering
+- add support for 'tnftp'
+- send NetCeiver reboot command to background to avoid blocked client
+
 2023-05-31/pbiering: 0.0.6
 - add RPM spec file

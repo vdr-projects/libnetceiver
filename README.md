@@ -9,7 +9,7 @@ https://github.com/vdr-projects/libnetceiver
 Copyright (C) 2007-2010 by BayCom GmbH <info@baycom.de>
 
 Extensions by contributors<br/>
-Copyright (C) 2020-2022 by Peter Bieringer <pb@bieringer.de><br/>
+Copyright (C) 2020-2023 by Peter Bieringer <pb@bieringer.de><br/>
 Copyright (C) 2013-2015 by hsteinhaus<br/>
 Copyright (C) 2014      by mhorwath<br/>
 Copyright (C) 2013      by Hoppaz<br/>
