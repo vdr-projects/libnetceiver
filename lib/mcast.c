@@ -273,7 +273,7 @@ UDPContext *client_udp_open (const struct in6_addr *mcg, int port, const char *i
 
 #if ! (defined WIN32 || defined APPLE)
 	if (ifname && strlen (ifname) && setsockopt (recvfd, SOL_SOCKET, SO_BINDTODEVICE, ifname, strlen (ifname) + 1)) {
-		dbg ("%s: setsockopt SO_BINDTODEVICE %s failed\n", __FUNCTION__, ifname);
+		warn ("%s: setsockopt SO_BINDTODEVICE %s failed\n", __FUNCTION__, ifname);
 	}
 #endif
 	if (bind (recvfd, (struct sockaddr *) &s->dest_addr, s->dest_addr_len) < 0) {
