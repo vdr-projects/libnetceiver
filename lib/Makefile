@@ -10,9 +10,13 @@ VERMAJOR = 1
 VERMINOR = 0
 VERPATCH = 0
 
-BASENAME = libnetceiver.so
+NAME = libnetceiver
+
+BASENAME = $(NAME).so
+BASENAME_STATIC = $(NAME).a
 
 LIBNAME = $(BASENAME).$(VERMAJOR).$(VERMINOR).$(VERPATCH)
+LIBNAME_STATIC = $(BASENAME_STATIC)
 
 HEADERS = headers.h defs.h version.h list.h satlists.h mcast.h recv_ccpp.h recv_tv.h tools.h interfaces.h mld.h api_server.h tca_handler.h tra_handler.h mld_reporter.h ciparser.h ci_handler.h mmi_handler.h logging.h
 
@@ -105,11 +109,16 @@ else
 MCLI_OBJS := $(MCLI_OBJS)
 endif
 
-all: $(LIBNAME)
+all: $(LIBNAME) $(LIBNAME_STATIC)
 
 $(LIBNAME): $(MCLI_OBJS)
+	echo "Create dynamic library"
 	$(CC) $(LDFLAGS) -shared $(MCLI_OBJS) $(LDLIBS) -Wl,-soname="$(BASENAME).$(VERMAJOR)" -o $@
 	ln -sf $(LIBNAME) $(BASENAME)
+
+$(LIBNAME_STATIC): $(MCLI_OBJS)
+	echo "Create static library"
+	$(AR) rcs $(LIBNAME_STATIC) $(MCLI_OBJS)
 
 .PHONY: libnetceiver.pc
 libnetceiver.pc:
@@ -137,7 +146,7 @@ $(MCLI)-socktest: api_sock_test.o
 	$(CC) $(LDFLAGS) -o $@ api_sock_test.o
 
 clean:
-	rm -f *.o *.so* libnetceiver.pc
+	rm -f *.o *.so* *.a libnetceiver.pc
 
 mingw32:
 	rm -rf mingw/*.c mingw/*.h mingw/win32
@@ -156,6 +165,7 @@ mingw32:
 install-lib: all
 	install -d $(DESTDIR)$(LIBDIR)
 	install -m 755 $(LIBNAME) $(DESTDIR)$(LIBDIR)/
+	install -m 755 $(LIBNAME_STATIC) $(DESTDIR)$(LIBDIR)/
 	( cd $(DESTDIR)$(LIBDIR); ln -sf $(LIBNAME) $(BASENAME).$(VERMAJOR); ln -sf $(LIBNAME) $(BASENAME) )
 
 install-includes:
