@@ -1,8 +1,8 @@
 # Build instructions
 # rpmbuild -bb --undefine=_disable_source_fetch libnetceiver.spec
 
-%define ver	0.0.7
-%define rel	5
+%define ver	0.0.8
+%define rel	1
 
 Name:           libnetceiver
 Version:        %{ver}
@@ -33,6 +33,14 @@ Requires:	libnetceiver
 
 %description devel
 C header files for LibNetCeiver
+
+
+%package static
+Summary:        Static library for DVB multicast stream client
+Requires:	libnetceiver
+
+%description static
+Static library for DVB multicast stream client
 
 
 %prep
@@ -73,7 +81,14 @@ export PCDIR=%{_libdir}/pkgconfig
 %{_libdir}/pkgconfig/*
 
 
+%files static
+%{_libdir}/*.a
+
+
 %changelog
+* Thu Jul 31 2025 Peter Bieringer <pb@bieringer.de> - 0.0.8-1
+- Add subpackage 'static'
+
 * Tue Jun 20 2023 Peter Bieringer <pb@bieringer.de> - 0.0.7-5
 - Add requirement for 'tnftp'
 

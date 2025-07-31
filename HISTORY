@@ -1,3 +1,6 @@
+2025-07-31/pbiering: 0.0.8
+- add support for static build
+
 2023-06-20/pbiering: 0.0.7
 - add autodetection of 'tnftp' in PATH
 
