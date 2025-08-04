@@ -229,11 +229,11 @@ typedef struct recv_festatus
 } recv_festatus_t;
 
 //XML
-#include <libxml/encoding.h>
-#include <libxml/xmlwriter.h>
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
-#include <libxml/xpath.h>
+#include <libxml2/libxml/encoding.h>
+#include <libxml2/libxml/xmlwriter.h>
+#include <libxml2/libxml/xmlmemory.h>
+#include <libxml2/libxml/parser.h>
+#include <libxml2/libxml/xpath.h>
 
 #ifdef DMALLOC
   #include <dmalloc.h>
