@@ -1,7 +1,7 @@
 # Build instructions
 # rpmbuild -bb --undefine=_disable_source_fetch libnetceiver.spec
 
-%define ver	0.0.9
+%define ver	0.0.8
 %define rel	1
 
 Name:           libnetceiver
@@ -86,9 +86,6 @@ export PCDIR=%{_libdir}/pkgconfig
 
 
 %changelog
-* Thu Jul 31 2025 Peter Bieringer <pb@bieringer.de> - 0.0.9-1
-- Upstream 0.0.9
-
 * Thu Jul 31 2025 Peter Bieringer <pb@bieringer.de> - 0.0.8-1
 - Add subpackage 'static'
 
